@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calculadora de Taxas — Shopee & Mercado Livre 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@500;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      background: #0d0d0f;
+      font-family: 'DM Sans', sans-serif;
+      color: #fff;
+      padding: 0 16px 60px;
+    }
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(24px, 5vw, 36px);
+      background: linear-gradient(135deg, #ffd600, #ff6b35);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+    .header { text-align: center; padding: 40px 0 32px; }
+    .header p { color: #666; font-size: 14px; }
+    .card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 720px;
+      margin: 0 auto 24px;
+    }
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      color: #ccc;
+      margin-bottom: 16px;
+    }
+    .row { display: flex; gap: 16px; flex-wrap: wrap; }
+    .col { flex: 1; min-width: 200px; }
+    label {
+      display: block;
+      color: #888;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+    input, select {
+      width: 100%;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: #fff;
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      outline: none;
+      margin-bottom: 14px;
+    }
+    input::placeholder { color: #444; }
+    .platforms { display: flex; gap: 16px; flex-wrap: wrap; max-width: 720px; margin: 0 auto 20px; }
+    .platform-card {
+      flex: 1; min-width: 280px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 16px;
+      padding: 24px;
+    }
+    .platform-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+    .platform-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 18px; margin: 0; }
+    .result-row {
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 8px;
+    }
+    .result-label { color: #aaa; font-size: 13px; }
+    .result-value { font-family: 'DM Mono', monospace; font-weight: 700; font-size: 15px; color: #fff; }
+    .result-row.negative { border-color: rgba(255,82,82,0.4); }
+    .result-row.negative .result-value { color: #ff5252; }
+    .result-row.highlight { border-color: rgba(255,214,0,0.4); background: rgba(255,214,0,0.08); }
+    .result-row.highlight .result-value { color: #ffd600; }
+    .empty { color: #555; text-align: center; padding: 20px 0; font-size: 13px; }
+    .comparison {
+      max-width: 720px; margin: 0 auto 0;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 24px;
+    }
+    .comp-grid { display: flex; gap: 12px; flex-wrap: wrap; }
+    .comp-item {
+      flex: 1; min-width: 180px;
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+    .comp-label { font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+    .comp-winner { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 16px; }
+    .comp-detail { font-size: 12px; color: #555; margin-top: 4px; }
+    footer { text-align: center; color: #444; font-size: 11px; margin-top: 32px; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div style="font-size:36px;margin-bottom:8px">🏪</div>
+  <h1>Calculadora de Taxas</h1>
+  <p>Shopee &amp; Mercado Livre — Taxas 2026</p>
+</div>
+
+<div class="card">
+  <div class="card-title">📦 Dados do Produto</div>
+  <div class="row">
+    <div class="col">
+      <label>Preço de Venda (R$)</label>
+      <input type="number" id="price" placeholder="Ex: 89.90" oninput="calculate()" />
+    </div>
+    <div class="col">
+      <label>Custo do Produto (R$)</label>
+      <input type="number" id="cost" placeholder="Ex: 40.00" oninput="calculate()" />
+    </div>
+  </div>
+</div>
+
+<div class="platforms">
+  <!-- Shopee -->
+  <div class="platform-card" style="border:1px solid rgba(238,77,45,0.2)">
+    <div class="platform-header">
+      <span style="font-size:24px">🛍️</span>
+      <h2 class="platform-title" style="color:#ee4d2d">Shopee</h2>
+    </div>
+    <label>Tipo de Vendedor</label>
+    <select id="shopeeType" onchange="calculate()">
+      <option value="cnpj">CNPJ (empresa)</option>
+      <option value="cpf">CPF (pessoa física)</option>
+    </select>
+    <div id="shopeeResults"><div class="empty">Preencha os campos acima para calcular</div></div>
+  </div>
+
+  <!-- Mercado Livre -->
+  <div class="platform-card" style="border:1px solid rgba(255,230,0,0.2)">
+    <div class="platform-header">
+      <span style="font-size:24px">🟡</span>
+      <h2 class="platform-title" style="color:#ffe600">Mercado Livre</h2>
+    </div>
+    <label>Tipo de Anúncio</label>
+    <select id="mlType" onchange="calculate()">
+      <option value="classico">Clássico (12%)</option>
+      <option value="premium">Premium (17%)</option>
+    </select>
+    <div id="mlResults"><div class="empty">Preencha os campos acima para calcular</div></div>
+  </div>
+</div>
+
+<div class="comparison" id="comparison" style="display:none">
+  <div class="card-title" style="margin-bottom:16px">⚖️ Comparativo</div>
+  <div class="comp-grid" id="compGrid"></div>
+</div>
+
+<footer>Taxas baseadas nas políticas oficiais de março 2026 • Sempre verifique as taxas atuais nas plataformas</footer>
+
+<script>
+  function fmt(v) {
+    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(v);
+  }
+
+  function calcShopee(p, c, type) {
+    let pct, fixed;
+    if (type === 'cnpj') {
+      if (p <= 79.99)      { pct = 20; fixed = 4; }
+      else if (p <= 99.99) { pct = 14; fixed = 16; }
+      else if (p <= 199.99){ pct = 14; fixed = 20; }
+      else                  { pct = 14; fixed = 26; }
+    } else {
+      pct = 14;
+      fixed = p < 10 ? p * 0.5 : 7;
+    }
+    const commission = p * pct / 100;
+    const totalTax = commission + fixed;
+    const net = p - totalTax;
+    const profit = net - c;
+    const margin = (profit / p) * 100;
+    const minPrice = (c + fixed) / (1 - pct / 100);
+    return { commission, fixed, totalTax, net, profit, margin, minPrice, pct };
+  }
+
+  function calcML(p, c, type) {
+    const pct = type === 'classico' ? 12 : 17;
+    let fixed;
+    if (p < 12.50)      fixed = p * 0.5;
+    else if (p <= 49.99) fixed = 6.25;
+    else if (p <= 78.99) fixed = 6.75;
+    else                  fixed = 0;
+    const commission = p * pct / 100;
+    const totalTax = commission + fixed;
+    const net = p - totalTax;
+    const profit = net - c;
+    const margin = (profit / p) * 100;
+    const minPrice = (c + fixed) / (1 - pct / 100);
+    return { commission, fixed, totalTax, net, profit, margin, minPrice, pct };
+  }
+
+  function renderResults(r) {
+    return `
+      <div class="result-row negative"><span class="result-label">Comissão (${r.pct}%)</span><span class="result-value">${fmt(r.commission)}</span></div>
+      <div class="result-row negative"><span class="result-label">Taxa fixa</span><span class="result-value">${fmt(r.fixed)}</span></div>
+      <div class="result-row negative"><span class="result-label">Total de taxas</span><span class="result-value">${fmt(r.totalTax)}</span></div>
+      <div class="result-row"><span class="result-label">Valor líquido</span><span class="result-value">${fmt(r.net)}</span></div>
+      <div class="result-row ${r.profit < 0 ? 'negative' : 'highlight'}"><span class="result-label">Lucro líquido</span><span class="result-value">${fmt(r.profit)}</span></div>
+      <div class="result-row ${r.margin < 0 ? 'negative' : r.margin >= 15 ? 'highlight' : ''}"><span class="result-label">Margem de lucro</span><span class="result-value">${r.margin.toFixed(1)}%</span></div>
+      <div class="result-row"><span class="result-label">Preço mínimo p/ lucrar</span><span class="result-value">${fmt(r.minPrice)}</span></div>
+    `;
+  }
+
+  function calculate() {
+    const p = parseFloat(document.getElementById('price').value);
+    const c = parseFloat(document.getElementById('cost').value);
+    const shopeeType = document.getElementById('shopeeType').value;
+    const mlType = document.getElementById('mlType').value;
+
+    if (isNaN(p) || isNaN(c) || p <= 0) {
+      document.getElementById('shopeeResults').innerHTML = '<div class="empty">Preencha os campos acima para calcular</div>';
+      document.getElementById('mlResults').innerHTML = '<div class="empty">Preencha os campos acima para calcular</div>';
+      document.getElementById('comparison').style.display = 'none';
+      return;
+    }
+
+    const s = calcShopee(p, c, shopeeType);
+    const m = calcML(p, c, mlType);
+
+    document.getElementById('shopeeResults').innerHTML = renderResults(s);
+    document.getElementById('mlResults').innerHTML = renderResults(m);
+
+    // Comparison
+    const comps = [
+      { label: 'Menor taxa total', sVal: s.totalTax, mVal: m.totalTax, shopeeBetter: s.totalTax < m.totalTax, fmtFn: fmt },
+      { label: 'Maior lucro',      sVal: s.profit,   mVal: m.profit,   shopeeBetter: s.profit > m.profit,     fmtFn: fmt },
+      { label: 'Melhor margem',    sVal: s.margin,   mVal: m.margin,   shopeeBetter: s.margin > m.margin,
+        fmtFn: v => v.toFixed(1) + '%' },
+    ];
+
+    document.getElementById('compGrid').innerHTML = comps.map(item => {
+      const winner = item.shopeeBetter ? 'Shopee 🏆' : 'Mercado Livre 🏆';
+      const color = item.shopeeBetter ? '#ee4d2d' : '#ffe600';
+      return `<div class="comp-item" style="background:rgba(255,255,255,0.04);border:1px solid ${color}44">
+        <div class="comp-label">${item.label}</div>
+        <div class="comp-winner" style="color:${color}">${winner}</div>
+        <div class="comp-detail">Shopee: ${item.fmtFn(item.sVal)} | ML: ${item.fmtFn(item.mVal)}</div>
+      </div>`;
+    }).join('');
+
+    document.getElementById('comparison').style.display = 'block';
+  }
+</script>
+</body>
+</html>
